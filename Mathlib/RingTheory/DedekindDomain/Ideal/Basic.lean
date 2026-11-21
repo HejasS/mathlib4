@@ -117,12 +117,8 @@ theorem PrimeSpectrum.exists_multiset_prod_cons_le_and_prod_not_le (hNF : ¬IsFi
     · refine fun h => h_eraseZ (Z.erase P) ⟨h, ?_⟩ (Multiset.erase_lt.mpr hPZ)
       exact hZP0
 
-namespace FractionalIdeal
-variable {I : Ideal A}
 
-open Ideal
-
-lemma not_inv_le_one_of_ne_bot (hI0 : I ≠ ⊥) (hI1 : I ≠ ⊤) :
+lemma FractionalIdeal.not_inv_le_one_of_ne_bot {I : Ideal A} (hI0 : I ≠ ⊥) (hI1 : I ≠ ⊤) :
     ¬(I⁻¹ : FractionalIdeal A⁰ K) ≤ 1 := by
   have hNF : ¬IsField A := fun h ↦ letI := h.toField; (eq_bot_or_eq_top I).elim hI0 hI1
   wlog hM : I.IsMaximal generalizing I
@@ -162,8 +158,6 @@ lemma not_inv_le_one_of_ne_bot (hI0 : I ≠ ⊥) (hI1 : I ≠ ⊤) :
     rw [← div_eq_mul_inv, eq_div_iff_mul_eq hnz_fa, ← map_mul] at h₂_abs
     have := Ideal.mem_span_singleton'.mpr ⟨x', IsFractionRing.injective A K h₂_abs⟩
     contradiction
-
-end FractionalIdeal
 
 end DimensionLEOne
 
