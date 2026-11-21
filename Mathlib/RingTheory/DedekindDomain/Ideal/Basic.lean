@@ -162,8 +162,7 @@ lemma FractionalIdeal.not_inv_le_one_of_ne_bot {I : Ideal A} (hI0 : I ≠ ⊥) (
 end DimensionLEOne
 
 namespace FractionalIdeal
-
-variable {I : Ideal A} [IsDedekindDomain A]
+variable [IsDedekindDomain A] {I : Ideal A}
 
 private theorem mul_inv_cancel_of_le_one (hI0 : I ≠ ⊥)
     (hI : (I * (I : FractionalIdeal A⁰ K)⁻¹)⁻¹ ≤ 1) : I * (I : FractionalIdeal A⁰ K)⁻¹ = 1 := by
