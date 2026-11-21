@@ -78,14 +78,18 @@ theorem FractionalIdeal.one_mem_inv_coeIdeal [IsDomain A] {I : Ideal A} (hI : I 
 @[deprecated (since := "2026-11-10")]
 alias FractionalIdeal.one_mem_inv_coe_ideal := FractionalIdeal.one_mem_inv_coeIdeal
 
-/-- Specialization of `exists_primeSpectrum_prod_le_and_ne_bot_of_domain` to Dedekind domains:
-Let `I : Ideal A` be a nonzero ideal, where `A` is a Dedekind domain that is not a field.
-Then `exists_primeSpectrum_prod_le_and_ne_bot_of_domain` states we can find a product of prime
-ideals that is contained within `I`. This lemma extends that result by making the product minimal:
-let `M` be a maximal ideal that contains `I`, then the product including `M` is contained within `I`
-and the product excluding `M` is not contained within `I`. -/
-theorem PrimeSpectrum.exists_multiset_prod_cons_le_and_prod_not_le [IsDedekindDomain A]
-    (hNF : ¬IsField A) {I M : Ideal A} (hI0 : I ≠ ⊥) (hIM : I ≤ M) [hM : M.IsMaximal] :
+section DimensionLEOne
+
+variable [IsDomain A] [IsNoetherianRing A] [Ring.DimensionLEOne A]
+
+/-- Specialization of `exists_primeSpectrum_prod_le_and_ne_bot_of_domain` to one-dimensional
+Noetherian domains: Let `I : Ideal A` be a nonzero ideal, where `A` is a Noetherian one-dimensional
+domain. Then `exists_primeSpectrum_prod_le_and_ne_bot_of_domain` states we can find a product of
+prime ideals that is contained within `I`. This lemma extends that result by making the product
+minimal: let `M` be a maximal ideal that contains `I`, then the product including `M` is contained
+within `I` and the product excluding `M` is not contained within `I`. -/
+theorem PrimeSpectrum.exists_multiset_prod_cons_le_and_prod_not_le (hNF : ¬IsField A)
+    {I M : Ideal A} (hI0 : I ≠ ⊥) (hIM : I ≤ M) [hM : M.IsMaximal] :
     ∃ Z : Multiset (PrimeSpectrum A),
       (M ::ₘ Z.map asIdeal).prod ≤ I ∧
         ¬Multiset.prod (Z.map asIdeal) ≤ I := by
@@ -114,7 +118,7 @@ theorem PrimeSpectrum.exists_multiset_prod_cons_le_and_prod_not_le [IsDedekindDo
       exact hZP0
 
 namespace FractionalIdeal
-variable [IsDedekindDomain A] {I : Ideal A}
+variable {I : Ideal A}
 
 open Ideal
 
@@ -158,6 +162,14 @@ lemma not_inv_le_one_of_ne_bot (hI0 : I ≠ ⊥) (hI1 : I ≠ ⊤) :
     rw [← div_eq_mul_inv, eq_div_iff_mul_eq hnz_fa, ← map_mul] at h₂_abs
     have := Ideal.mem_span_singleton'.mpr ⟨x', IsFractionRing.injective A K h₂_abs⟩
     contradiction
+
+end FractionalIdeal
+
+end DimensionLEOne
+
+namespace FractionalIdeal
+
+variable {I : Ideal A} [IsDedekindDomain A]
 
 private theorem mul_inv_cancel_of_le_one (hI0 : I ≠ ⊥)
     (hI : (I * (I : FractionalIdeal A⁰ K)⁻¹)⁻¹ ≤ 1) : I * (I : FractionalIdeal A⁰ K)⁻¹ = 1 := by
